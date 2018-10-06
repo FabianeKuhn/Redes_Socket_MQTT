@@ -151,6 +151,8 @@ __webpack_require__(3)(FusionCharts);
 //On connection with socket, will start receiving the data
       socket.on('news', function (data) {
         function updateData() {
+            console.log("Update");
+            console.log(data.vale);
                          //Converting the fetched data in FusionCharts format
             var strData = "&label=" + data.label + "&value=" + data.value;
                         //feeding the data to the real time chart
