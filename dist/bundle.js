@@ -72,91 +72,127 @@ __webpack_require__(2)(FusionCharts);
 __webpack_require__(3)(FusionCharts);
 
   var socket = io('http://localhost:3000/');
-        var transactionChart = new FusionCharts({
-            id: "mychart",
-            type: 'realtimecolumn',
-            width: '700',
-            height: '350',
-            dataFormat: 'json',
-            dataSource: {
+
+  FusionCharts.ready(function() {
+          var myThm = new FusionCharts({
+              type: 'thermometer',
+              id: 'myThm',
+              width: '240',
+              height: '300',
+              dataFormat: 'json',
+              dataSource: {
                 "chart": {
-                 "caption": "Projeto de Redes I",
-                    "subCaption": "Dados via ESP8266 - Fabiane e Jaqueline",
-                    "yaxismaxvalue": "10",
-                    "numdisplaysets": "10",
-                    "yAxisName":"Quantity",
-                    "labeldisplay": "rotate",
-                    "showLegend":"0",
-                    "showValues": "0",
-                    "numbersuffix": "ºC",
-                    "showlabels": "1",
-/*This parameter lets you set whether you want the latest value (received from server) to be displayed on the chart or not*/
-                    "showRealTimeValue": "0",
-/*For this parameter, you can specify the number of seconds after which the chart will look for new data. This process will happen continuously - i.e., if you specify 5 seconds here, the chart will look for new data every 5 seconds*/
-                     "refreshInterval":".1",
-/*If you want the chart to keep polling for new data every x seconds and queue it, you can specify that x seconds as updateInterval. This helps you poll at different intervals and then draw at another interval (specified as refreshInterval)*/
-                    "updateInterval":".1",
-                    "yAxisNamePadding":"10",
-                    //Cosmetics
-                    "paletteColors" : "#0075c2,#1aaf5d",
-                    "baseFontColor" : "#333333",
-                    "baseFont" : "Helvetica Neue,Arial",
-                    "captionFontSize" : "14",
-                    "subcaptionFontSize" : "14",
-                    "subcaptionFontBold" : "0",
-                    "showBorder" : "0",
-                    "bgColor" : "#ffffff",
-                    "showShadow" : "0",
-                    "canvasBgColor" : "#ffffff",
-                    "canvasBorderAlpha" : "0",
-                    "divlineAlpha" : "100",
-                    "divlineColor" : "#999999",
-                    "divlineThickness" : "1",
-                    "divLineIsDashed" : "1",
-                    "divLineDashLen" : "1",
-                    "divLineGapLen" : "1",
-                    "usePlotGradientColor" : "0",
-                    "showplotborder" : "0",
-                    "valueFontColor" : "#ffffff",
-                    "placeValuesInside" : "1",
-                    "rotateValues" : "1",
-                    "showXAxisLine" : "1",
-                    "xAxisLineThickness" : "1",
-                    "xAxisLineColor" : "#999999",
-                    "showAlternateHGridColor" : "0",
-                    "legendBgAlpha" : "0",
-                    "legendBorderAlpha" : "0",
-                    "legendShadow" : "0",
-                    "legendItemFontSize" : "10",
-                    "legendItemFontColor" : "#666666"
-                    },
-                "categories": [
-                    {
-                        "category": [
-                            { "label": "Start" }
-                        ]
-                    }
-                ],
-                "dataset": [ 
-                    {
-                        "seriesname": "",
-                        "alpha": "100",
-                        "data": [
-                            { "value": "3" }
-                        ]
-                    }
-                ]      
-            }
-        }).render("chart-container");
-//On connection with socket, will start receiving the data
-      socket.on('news', function (data) {
-        function updateData() {
-                         //Converting the fetched data in FusionCharts format
-            var strData = "&label=" + data.label + "&value=" + data.value;
-                        //feeding the data to the real time chart
-            FusionCharts.items.mychart.feedData(strData);
-        }
-        //calling the update method
+                  "theme": "fusion",
+                  "caption": "Temperatura",
+                  "subcaption": "Dados via ESP8266",
+                  "lowerLimit": "-10",
+                  "upperLimit": "60",
+                  "numberSuffix": "°C",
+                  "plotToolText": "Temperatura: <b>$datavalue</b> ",
+                  "showhovereffect": "1",
+                  "decimals": "1",
+                  //Habilita atualização de dados real time
+                  "showRealTimeValue": "0",
+                  //Intervalo de atualização dos dados (segundos)
+                  "refreshInterval":".1",
+                  //Intervalo de busca dos dados
+                  "updateInterval":".1",
+                  //Design
+                  "yAxisNamePadding":"10",
+                  "showBorder" : "0",
+                  "bgColor" : "#ffffff",
+                  "showShadow" : "0",
+                  "canvasBgColor" : "#ffffff",
+                  "gaugeFillColor": "#0000CD",
+                  "gaugeFillAlpha": "70",
+                  "thmOriginX": "100",
+                  "chartBottomMargin": "20",
+                  "paletteColors" : "#0075c2,#1aaf5d",
+                  "baseFontColor" : "#333333",
+                  "baseFont" : "Helvetica Neue,Arial",
+                  "baseFontSize": "14"
+                 },
+                "value": "-6"
+                }
+              })
+              .render("chart-container1");
+          });
+
+          FusionCharts.ready(function() {
+            var myChart = new FusionCharts({
+              type: 'angulargauge',
+              id: 'myHum',
+              width: '500',
+              height: '300',
+              dataFormat: 'json',
+              dataSource: {
+                "chart": {
+                  "theme": "fusion",
+                  "caption": "Umidade Relativa do Ar",
+                  "subcaption": "Dados via ESP8266",
+                  "showValue": "1",
+                  "lowerLimit": "0",
+                  "upperLimit": "100",
+                  "numberSuffix": "%",
+                  "plotToolText": "Umidade: <b>$dataValue</b>",
+                  //Habilita atualização de dados real time
+                  "showRealTimeValue": "0",
+                  //Intervalo de atualização dos dados (segundos)
+                  "refreshInterval":".1",
+                  //Intervalo de busca dos dados
+                  "updateInterval":".1",
+                  //Design
+                  "yAxisNamePadding":"10",
+                  "showBorder" : "0",
+                  "bgColor" : "#ffffff",
+                  "showShadow" : "0",
+                  "showhovereffect": "1",
+                  "chartBottomMargin": "20",
+                  "paletteColors" : "#0075c2,#1aaf5d",
+                  "baseFontColor" : "#333333",
+                  "baseFont" : "Helvetica Neue,Arial",
+                  "baseFontSize": "14"
+                },
+                "colorRange": {
+                  "color": [{
+                    "minValue": "0",
+                    "maxValue": "30",
+                    "code": "#F2726F"
+                  }, {
+                    "minValue": "50",
+                    "maxValue": "80",
+                    "code": "#62B58F"
+                  }, {
+                    "minValue": "80",
+                    "maxValue": "100",
+                    "code": "#FFC533"
+                  }]
+                },
+                "dials": {
+                  "dial": [{
+                    "value": "9.8",
+                    "toolText": "Umidade: <b>$dataValue</b>"
+
+                  }]
+                }
+              }
+            }).render("chart-container2");
+          });
+
+        //Conectado com sockets, começa o recebimento dos dados
+        socket.on('news', function (data) {
+          function updateData() {
+              //Temperatura
+              //Conversão dos dados para o formato no FusionCharts
+              var temp = parseInt(Math.random() * (-10+50));
+              FusionCharts.items["myThm"].feedData("&value=" + temp);
+
+              //Umidade relativa do ar
+              //Conversão dos dados para o formato no FusionCharts
+              var hum = parseInt(Math.random() * (100));
+              FusionCharts.items["myHum"].feedData("&value=" + hum);
+          }
+        //chamada do método
         updateData();
 
      });
