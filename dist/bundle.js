@@ -117,80 +117,10 @@ __webpack_require__(3)(FusionCharts);
               })
               .render("chart-container1");
           });
-
-          FusionCharts.ready(function() {
-            var myChart = new FusionCharts({
-              type: 'angulargauge',
-              id: 'myHum',
-              width: '500',
-              height: '300',
-              dataFormat: 'json',
-              dataSource: {
-                "chart": {
-                  "theme": "fusion",
-                  "caption": "Umidade Relativa do Ar",
-                  "subcaption": "Dados via ESP8266",
-                  "showValue": "1",
-                  "lowerLimit": "0",
-                  "upperLimit": "100",
-                  "numberSuffix": "%",
-                  "plotToolText": "Umidade: <b>$dataValue</b>",
-                  //Habilita atualização de dados real time
-                  "showRealTimeValue": "0",
-                  //Intervalo de atualização dos dados (segundos)
-                  "refreshInterval":".1",
-                  //Intervalo de busca dos dados
-                  "updateInterval":".1",
-                  //Design
-                  "yAxisNamePadding":"10",
-                  "showBorder" : "0",
-                  "bgColor" : "#ffffff",
-                  "showShadow" : "0",
-                  "showhovereffect": "1",
-                  "chartBottomMargin": "20",
-                  "paletteColors" : "#0075c2,#1aaf5d",
-                  "baseFontColor" : "#333333",
-                  "baseFont" : "Helvetica Neue,Arial",
-                  "baseFontSize": "14"
-                },
-                "colorRange": {
-                  "color": [{
-                    "minValue": "0",
-                    "maxValue": "30",
-                    "code": "#F2726F"
-                  }, {
-                    "minValue": "50",
-                    "maxValue": "80",
-                    "code": "#62B58F"
-                  }, {
-                    "minValue": "80",
-                    "maxValue": "100",
-                    "code": "#FFC533"
-                  }]
-                },
-                "dials": {
-                  "dial": [{
-                    "value": "9.8",
-                    "toolText": "Umidade: <b>$dataValue</b>"
-
-                  }]
-                }
-              }
-            }).render("chart-container2");
-          });
-
         //Conectado com sockets, começa o recebimento dos dados
         socket.on('news', function (data) {
           function updateData() {
-              //Temperatura
-              //Conversão dos dados para o formato no FusionCharts
-              var temp = parseInt(Math.random() * (-10+50));
-              FusionCharts.items["myThm"].feedData("&value=" + temp);
-
-              //Umidade relativa do ar
-              //Conversão dos dados para o formato no FusionCharts
-              var hum = parseInt(Math.random() * (100));
-              FusionCharts.items["myHum"].feedData("&value=" + hum);
+              FusionCharts.items["myThm"].feedData("&value=" + data.value);
           }
         //chamada do método
         updateData();

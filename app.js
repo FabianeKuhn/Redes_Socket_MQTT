@@ -26,29 +26,24 @@ clientMqtt.subscribe("s8dDeVa8ap/redes/trabalhoGA", { qos: 1 }, function(err, gr
 
 //Conexão do socket
 io.on('connection', function (socket) {
-clientMqtt.on('message', function(topic, message) { 
-  var centralData = JSON.parse(message.toString());
+  clientMqtt.on('message', function(topic, message) { 
+    var centralData = JSON.parse(message.toString());
  
-  if(topic == "s8dDeVa8ap/redes/trabalhoGA")
-  { 
-
-    var x = new Date();
+    if(topic == "s8dDeVa8ap/redes/trabalhoGA"){ 
+      var x = new Date();
 //Formata a hora da medida
-    var formatted =  (x.getHours()) + ':' + (x.getMinutes()) + ':' + (x.getSeconds()) + ':' + (x.getMilliseconds());
-    console.log(centralData);
-
-    var strData = {"label": formatted,
-                           "value":centralData.fishTemperature
-                        }
-
-                         //   Manda os dados para o cliente
-    socket.emit('news', strData);
-      }
-    })
+      var formatted =  (x.getHours()) + ':' + (x.getMinutes()) + ':' + (x.getSeconds()) + ':' + (x.getMilliseconds());
+      console.log(centralData);
+      var strData = {"label": formatted,
+                     "value":centralData.fishTemperature
+                    }
+//   Manda os dados para o cliente
+      socket.emit('news', strData);
+    }
+  })
 });
-    
 
 //Server escuta na porta 3000
-http.listen(3000, function() {
+http.listen(3000, function() {''
    console.log('Server na porta *:3000');
 });
