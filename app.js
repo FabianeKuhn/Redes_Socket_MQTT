@@ -27,15 +27,15 @@ clientMqtt.subscribe("s8dDeVa8ap/redes/trabalhoGA", { qos: 1 }, function(err, gr
 //Conexão do socket
 io.on('connection', function (socket) {
   clientMqtt.on('message', function(topic, message) { 
-    var centralData = JSON.parse(message.toString());
+    var temperatura = JSON.parse(message.toString());
  
     if(topic == "s8dDeVa8ap/redes/trabalhoGA"){ 
       var x = new Date();
 //Formata a hora da medida
       var formatted =  (x.getHours()) + ':' + (x.getMinutes()) + ':' + (x.getSeconds()) + ':' + (x.getMilliseconds());
-      console.log(centralData);
+      console.log(temperatura);
       var strData = {"label": formatted,
-                     "value":centralData.fishTemperature
+                     "value": temperatura
                     }
 //   Manda os dados para o cliente
       socket.emit('news', strData);
