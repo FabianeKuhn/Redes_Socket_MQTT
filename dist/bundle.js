@@ -112,7 +112,7 @@ __webpack_require__(3)(FusionCharts);
                   "baseFont" : "Helvetica Neue,Arial",
                   "baseFontSize": "14"
                  },
-                "value": "20"
+                "value": "0"
                 }
               })
               .render("chart-container1");
@@ -129,7 +129,7 @@ __webpack_require__(3)(FusionCharts);
                 "chart": {
                   "caption": "Histórico de temperaturas",
                   "subCaption": "Dados via ESP8266",
-                  "numdisplaysets": "10",
+                  "numdisplaysets": "5",
                   "theme": "fusion",
                   "labeldisplay": "rotate",
                   "showValues": "1",
@@ -166,30 +166,19 @@ __webpack_require__(3)(FusionCharts);
                   "seriesname": "",
                   "alpha": "100",
                   "data": [{
-                    "value": "10"
+                    "value": "0"
                   }]
                 }]
               }
             }).render("chart-container2");
           });
 
-        function formatTime(time) {
-          (time < 10) ? (time = "0" + time) : (time = time);
-          return time;
-        }
-        //function changeColor(value){
-          //if (value > 10)
-            //FusionCharts.items["myThm"].feedData("&gaugeFillColor=" + "#fffffff")
-        //}
         //Conectado com sockets, começa o recebimento dos dados
         socket.on('news', function (data) {
           function updateData() {
               var value = data.value;
               FusionCharts.items["myThm"].feedData("&value=" + value);
-              //changeColor(value);
-              currDate = new Data();
-              var label = label = formatTime(currDate.getHours()) + ":" + formatTime(currDate.getMinutes()) + ":" + formatTime(currDate.getSeconds());
-              FusionCharts.items["myData"].feedData("&label=" + label + "&value=" + data.value);
+              FusionCharts.items["myData"].feedData("&label=" + data.label + "&value=" + data.value);
           }
         //chamada do método
         updateData();
