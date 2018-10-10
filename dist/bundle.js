@@ -77,7 +77,7 @@ __webpack_require__(3)(FusionCharts);
           var myThm = new FusionCharts({
               type: 'thermometer',
               id: 'myThm',
-              width: '240',
+              width: '200',
               height: '300',
               dataFormat: 'json',
               dataSource: {
@@ -107,20 +107,89 @@ __webpack_require__(3)(FusionCharts);
                   "gaugeFillAlpha": "70",
                   "thmOriginX": "100",
                   "chartBottomMargin": "20",
-                  "paletteColors" : "#0075c2,#1aaf5d",
+                  "paletteColors" : "#075c2,#1aaf5d",
                   "baseFontColor" : "#333333",
                   "baseFont" : "Helvetica Neue,Arial",
                   "baseFontSize": "14"
                  },
-                "value": "-6"
+                "value": "20"
                 }
               })
               .render("chart-container1");
           });
+
+          FusionCharts.ready(function() {
+            var myChart = new FusionCharts({
+              type: 'realtimecolumn',
+              id: 'myData',
+              width: '400',
+              height: '300',
+              dataFormat: 'json',
+              dataSource: {
+                "chart": {
+                  "caption": "Histórico de temperaturas",
+                  "subCaption": "Dados via ESP8266",
+                  "numdisplaysets": "10",
+                  "theme": "fusion",
+                  "labeldisplay": "rotate",
+                  "showValues": "1",
+                  "placeValuesInside": "0",
+                  "lowerLimit": "-10",
+                  "upperLimit": "60",
+                  "numberSuffix": "°C",
+                  "plotToolText": "Horário: <b>$label</b><br>Temperatura: <b>$dataValue</b>",
+                  //Habilita atualização de dados real time
+                  "showRealTimeValue": "0",
+                  //Intervalo de atualização dos dados (segundos)
+                  "refreshInterval":".1",
+                  //Intervalo de busca dos dados
+                  "updateInterval":".1",
+                  //Design
+                  "yAxisNamePadding":"10",
+                  "showBorder" : "0",
+                  "bgColor" : "#ffffff",
+                  "showShadow" : "0",
+                  "thmOriginX": "100",
+                  "chartBottomMargin": "20",
+                  "paletteColors" : "#0075c2,#1aaf5d",
+                  "baseFontColor" : "#333333",
+                  "baseFont" : "Helvetica Neue,Arial",
+                  "baseFontSize": "14",
+                  "hoverColor":"#231234"
+                },
+                "categories": [{
+                  "category": [{
+                    "label": "Começo"
+                  }]
+                }],
+                "dataset": [{
+                  "seriesname": "",
+                  "alpha": "100",
+                  "data": [{
+                    "value": "10"
+                  }]
+                }]
+              }
+            }).render("chart-container2");
+          });
+
+        function formatTime(time) {
+          (time < 10) ? (time = "0" + time) : (time = time);
+          return time;
+        }
+        //function changeColor(value){
+          //if (value > 10)
+            //FusionCharts.items["myThm"].feedData("&gaugeFillColor=" + "#fffffff")
+        //}
         //Conectado com sockets, começa o recebimento dos dados
         socket.on('news', function (data) {
           function updateData() {
-              FusionCharts.items["myThm"].feedData("&value=" + data.value);
+              var value = data.value;
+              FusionCharts.items["myThm"].feedData("&value=" + value);
+              //changeColor(value);
+              currDate = new Data();
+              var label = label = formatTime(currDate.getHours()) + ":" + formatTime(currDate.getMinutes()) + ":" + formatTime(currDate.getSeconds());
+              FusionCharts.items["myData"].feedData("&label=" + label + "&value=" + data.value);
           }
         //chamada do método
         updateData();
